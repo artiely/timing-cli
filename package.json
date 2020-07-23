@@ -7,7 +7,7 @@
     "timing-create": "bin/timing-create"
   },
   "name": "timing-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple CLI for creating your project",
   "main": "index.js",
   "scripts": {
