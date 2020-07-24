@@ -1,13 +1,14 @@
 {
   "bin": {
     "timing": "bin/timing",
+    "timing-init": "bin/timing-init",
     "timing-add": "bin/timing-add",
     "timing-delete": "bin/timing-delete",
     "timing-list": "bin/timing-list",
     "timing-create": "bin/timing-create"
   },
   "name": "timing-cli",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "A simple CLI for creating your project",
   "main": "index.js",
   "scripts": {

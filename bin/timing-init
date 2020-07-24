@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+// 交互式命令行
+const inquirer = require('inquirer')
+// 修改控制台字符串的样式
+const chalk = require('chalk')
+// node 内置文件模块
+const fs = require('fs')
+const ora = require('ora')
+const download = require('download-git-repo')
+// 读取根目录下的 template.json
+const tplObj = require(`${__dirname}/../template`)
+let choiceOpt = Object.keys(tplObj)
+// 自定义交互式命令行的问题及简单的校验
+let question = [
+  {
+    name: 'name',
+    type: 'input',
+    message: '请输入项目名称',
+    validate(val) {
+      if (val === '') {
+        return 'Name is required!'
+      } else {
+        return true
+      }
+    },
+  },
+  {
+    name: 'temp',
+    type: 'list',
+    message: '请选择模板',
+    choices: Object.keys(tplObj),
+    
+  },
+]
+
+inquirer.prompt(question).then((answers) => {
+  // answers 就是用户输入的内容，是个对象
+  let { name, temp } = answers
+  // 把模板信息写入 template.json 文件中
+  console.log(chalk.white('\n Start generating... \n'))
+  const spinner = ora('Downloading...')
+  spinner.start()
+  let url = tplObj[temp]
+  download(url, name, (err) => {
+    if (err) {
+      spinner.fail()
+      console.log(chalk.red(`Generation failed. ${err}`))
+      return
+    }
+
+    spinner.succeed()
+    console.log(`
+  
+▄▄▄█████▓ ██▓ ███▄ ▄███▓ ██▓ ███▄    █   ▄████  ▄████▄  ██▓     ██▓
+▓  ██▒ ▓▒▓██▒▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █  ██▒ ▀█▒▒██▀ ▀█ ▓██▒    ▓██▒
+▒ ▓██░ ▒░▒██▒▓██    ▓██░▒██▒▓██  ▀█ ██▒▒██░▄▄▄░▒▓█    ▄▒██░    ▒██▒
+░ ▓██▓ ░ ░██░▒██    ▒██ ░██░▓██▒  ▐▌██▒░▓█  ██▓▒▓▓▄ ▄██▒██░    ░██░
+  ▒██▒ ░ ░██░▒██▒   ░██▒░██░▒██░   ▓██░░▒▓███▀▒▒ ▓███▀ ░██████▒░██░
+  ▒ ░░   ░▓  ░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒  ░▒   ▒ ░ ░▒ ▒  ░ ▒░▓  ░░▓  
+    ░     ▒ ░░  ░      ░ ▒ ░░ ░░   ░ ▒░  ░   ░   ░  ▒  ░ ░ ▒  ░ ▒ ░
+  ░       ▒ ░░      ░    ▒ ░   ░   ░ ░ ░ ░   ░ ░         ░ ░    ▒ ░
+          ░         ░    ░           ░       ░ ░ ░         ░  ░ ░  
+                                               ░                   
+
+`)
+    console.log(chalk.green('\n Generation completed!'))
+    console.log('\n To get started')
+    console.log(chalk.blue(`\n    cd ${name}`))
+    console.log(chalk.blue(`\n    nmp i && npm run serve`))
+  })
+})
