@@ -13,11 +13,11 @@ Open your terminal and type `timing` or `timing -h` , you'll see the help infoma
 
 
   Commands:
-
+    init      Generate a new project by selecting
     add       Add a new template
     delete    Delete a template
     list      List all the templates
-    init      Generate a new project
+    create    Generate a new project by template name
 
   Options:
 
